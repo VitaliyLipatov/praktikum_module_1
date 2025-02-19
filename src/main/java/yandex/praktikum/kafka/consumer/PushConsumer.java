@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 
-public class PullConsumer {
+public class PushConsumer {
 
     public void read() {
         // Настройка консьюмера – адрес сервера, сериализаторы для ключа и значения
@@ -19,11 +19,10 @@ public class PullConsumer {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "first-module-group-1");     // Наименование группы консьюмеров
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "first-module-group-2");     // наименование группы консьюмеров
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");        // Начало чтения с самого начала
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");          // Автоматический коммит смещений (для pull модели консьюмера отключен)
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");           // Автоматический коммит смещений (для push модели консьюмера включен)
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "6000");           // Время ожидания активности от консьюмера
-        props.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, 10 * 1024 * 1024);    // Минимальный объём данных (в байтах), который консьюмер должен получить за один запрос к брокеру
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
 
@@ -32,12 +31,11 @@ public class PullConsumer {
 
         // Чтение сообщений
         while (true) {
-            // Устанавливаем таймаут ожидания, если на момент вызова метода poll нет доступных записей
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(120_000));
+            // Устанавливаем таймаут ожидания равный нулю, чтобы сообщения читались сразу после поступления
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(0));
             for (ConsumerRecord<String, String> record : records) {
-                System.out.printf("PullConsumer got message from topic first-module: key = %s, value = %s, offset = %s%n",
+                System.out.printf("PushConsumer got message from topic first-module: key = %s, value = %s, offset = %s%n",
                         record.key(), record.value(), record.offset());
-                consumer.commitAsync();
             }
         }
     }

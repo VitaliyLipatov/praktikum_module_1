@@ -2,14 +2,10 @@ package yandex.praktikum.kafka.topic;
 
 import org.apache.kafka.clients.admin.Admin;
 import org.apache.kafka.clients.admin.NewTopic;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
-@Component
 public class KafkaTopicCreate {
 
     //Пример создания топика через java-код

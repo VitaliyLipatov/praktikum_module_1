@@ -1,14 +1,23 @@
 package yandex.praktikum.kafka;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import yandex.praktikum.kafka.consumer.PullConsumer;
+import yandex.praktikum.kafka.consumer.PushConsumer;
+import yandex.praktikum.kafka.producer.Producer;
 
-@EnableScheduling
-@SpringBootApplication
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class KafkaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(KafkaApplication.class, args);
+		// Запуск чтения консьюмера с использованием модели pull
+		ExecutorService pullConsumerExecutorService = Executors.newSingleThreadExecutor();
+		pullConsumerExecutorService.submit(() -> new PullConsumer().read());
+		// Запуск чтения консьюмера с использованием модели push
+		ExecutorService pushConsumerExecutorService = Executors.newSingleThreadExecutor();
+		pushConsumerExecutorService.submit(() -> new PushConsumer().read());
+		// Запуск продьюсера
+		ExecutorService producerExecutorService = Executors.newSingleThreadExecutor();
+		producerExecutorService.submit(() -> new Producer().send());
 	}
 }
