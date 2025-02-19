@@ -35,8 +35,9 @@ public class PullConsumer {
             // Устанавливаем таймаут ожидания, если на момент вызова метода poll нет доступных записей
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(120_000));
             for (ConsumerRecord<String, String> record : records) {
-                System.out.printf("PullConsumer got message from topic first-module: key = %s, value = %s, offset = %s%n",
-                        record.key(), record.value(), record.offset());
+                System.out.printf("PullConsumer got message from topic first-module: key = %s, value = %s, "
+                        + "partition = %d offset = %s%n",
+                        record.key(), record.value(), record.partition(), record.offset());
                 consumer.commitAsync();
             }
         }

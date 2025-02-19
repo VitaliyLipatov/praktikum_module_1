@@ -34,8 +34,9 @@ public class PushConsumer {
             // Устанавливаем таймаут ожидания равный нулю, чтобы сообщения читались сразу после поступления
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(0));
             for (ConsumerRecord<String, String> record : records) {
-                System.out.printf("PushConsumer got message from topic first-module: key = %s, value = %s, offset = %s%n",
-                        record.key(), record.value(), record.offset());
+                System.out.printf("PushConsumer got message from topic first-module: key = %s, value = %s, "
+                                + "partition = %d offset = %s%n",
+                        record.key(), record.value(), record.partition(), record.offset());;
             }
         }
     }

@@ -1,6 +1,6 @@
 bin/kafka-topics.sh --create --topic first-module --bootstrap-server localhost:9095, localhost:9096 --partitions 3 --replication-factor 2
 
-$ bin/kafka-topics.sh --describe --topic first-module --bootstrap-server localhost:9095, localhost:9096
+bin/kafka-topics.sh --describe --topic first-module --bootstrap-server localhost:9095, localhost:9096
 Topic: first-module     TopicId: t1QICXozQg-xjvAfpKrurQ PartitionCount: 3       ReplicationFactor: 2    Configs:
         Topic: first-module     Partition: 0    Leader: 2       Replicas: 2,1   Isr: 2,1        Elr: N/A        LastKnownElr: N/A
         Topic: first-module     Partition: 1    Leader: 1       Replicas: 1,2   Isr: 1,2        Elr: N/A        LastKnownElr: N/A
